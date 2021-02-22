@@ -1,17 +1,18 @@
-service: auth0-APIGateway-customAuthorizer
+service: customAuthorizer
 
 provider:
   name: aws
-  runtime: nodejs6.10
+  runtime: nodejs10.x
   cfLogs: true
   timeout: 20
-  stage: dev
-  region: ap-northeast-1
+  stage: ${opt:stage, 'development'}
+  region: ${opt:region, 'eu-west-1'}
+  profile: ${opt:profile, ''}
   environment:
-    AUTH0_DOMAIN: ${file(./config.yml):auth0Domain}
-    AUDIENCE: ${file(./config.yml):audience}
-    JWKS_URI: ${file(./config.yml):jwksUri}
-    TOKEN_ISSUER: ${file(./config.yml):tokenIssuer}
+    AUTH0_DOMAIN: pandle-net.eu.auth0.com
+    AUDIENCE: pandle-net.eu.auth0.com
+    JWKS_URI: https://pandle-net.eu.auth0.com/.well-known/jwks.json
+    TOKEN_ISSUER: https://pandle-net.eu.auth0.com/
 
 plugins:
   - serverless-webpack

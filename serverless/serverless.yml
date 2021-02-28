@@ -13,6 +13,12 @@ provider:
     AUDIENCE: pandle-net.eu.auth0.com
     JWKS_URI: https://pandle-net.eu.auth0.com/.well-known/jwks.json
     TOKEN_ISSUER: https://pandle-net.eu.auth0.com/
+  stackTags:
+    Saving: ${self:custom.savingTags.saving.${self:provider.stage}, self:custom.savingTags.saving.default}
+    Delete: ${self:custom.savingTags.delete.${self:provider.stage}, self:custom.savingTags.delete.default} 
+  tags:
+    Saving: ${self:custom.savingTags.saving.${self:provider.stage}, self:custom.savingTags.saving.default}
+    Delete: ${self:custom.savingTags.delete.${self:provider.stage}, self:custom.savingTags.delete.default}
 
 plugins:
   - serverless-webpack
@@ -23,6 +29,13 @@ custom:
     babelOptions:
       presets: [es2015, es2016, stage-0]
       plugins: [transform-runtime]  
+  savingTags:
+    saving:
+      production: Disabled
+      default: Enabled
+    delete:
+      production: '0 18 30 2 .' # for added safety, a non-existent day
+      default: '0 18 . . .' # for deleting at any evening
 
 functions:
   customAuthorizer:
